@@ -1,0 +1,25 @@
+version: "3"
+
+services:
+  mariadb:
+    container_name: mariadb
+    build: requirements/mariadb
+    image: mariadb
+    env_file: .env
+    volumes:
+      - mariadb:/var/lib/mysql
+    networks:
+      - inception
+    restart: always
+
+networks:
+  inception:
+    driver: bridge
+
+volumes:
+  mariadb:
+    driver_opts:
+      type: none
+      device: /home/mhaan/data/mysql
+      o: bind
+
