@@ -2,17 +2,17 @@ FROM	debian:stable-slim
 
 RUN	apt-get update -y  && apt-get upgrade -y && apt-get install -y nginx openssl 
 
-RUN	mkdir /etc/nginx/ssl
+RUN	mkdir -p /etc/nginx/ssl
 
-RUN	openssl req -x509 -newkey rsa -nodes -days 365 \
+RUN	openssl req -x509 -newkey rsa:2048 -nodes -days 365 \
 	-out /etc/nginx/ssl/mhaan.crt \
 	-keyout /etc/nginx/ssl/mhaan.key \
-	-subj "/C=NL/L=Amsterdan/O=Codam/OU=mhaan"
+	-subj "/C=NL/L=Amsterdan/O=Codam/OU=mhaan/CN=mhaan/"
 
-COPY	./conf/default /etc/nginx/conf.d
+COPY	./conf/nginx.conf /etc/nginx/conf.d/default.conf
 
 RUN	mkdir -p /run/nginx
 
-EXPOSE	433
+EXPOSE	443
 
 CMD	["nginx", "-g", "daemon off;"]

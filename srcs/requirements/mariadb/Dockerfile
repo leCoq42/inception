@@ -2,10 +2,12 @@ FROM	debian:stable-slim
  
 RUN	apt-get update -y \
 	&& apt-get upgrade -y \
-	&& apt-get instal -y mariadb-server mariadb-client 
-
-RUN	mkdir -p /var/run/mysqld \ 
-	&& chown -R mysql:mysql /var/run/mysqld \
-	&& chown -R mysql:mysql /etc/mysql/
+	&& apt-get install -y mariadb-server mariadb-client 
 
 EXPOSE	3306
+
+COPY	./tools/mariadb_setup.sh /tmp/setup.sh
+#RUN	chmod 777 /tmp/setup.sh
+
+#RUN	/tmp/setup.sh
+ENTRYPOINT ["sh", "/tmp/setup.sh"]

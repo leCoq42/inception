@@ -1,25 +1,58 @@
-version: "3"
-
 services:
-  mariadb:
-    container_name: mariadb
-    build: requirements/mariadb
-    image: mariadb
-    env_file: .env
+  nginx:
+    container_name: nginx_inception
+    build: ./requirements/nginx
+    env_file:
+      - .env
     volumes:
-      - mariadb:/var/lib/mysql
+      - wordpress_data:/var/www/html
     networks:
-      - inception
+      - backend
+    ports:
+      - "443:443"
+    depends_on:
+      - wordpress
+    restart: always
+
+  wordpress:
+    container_name: wordpress_inception
+    depends_on:
+      - mariadb
+    build: 
+      context: ./requirements/wordpress
+      dockerfile: Dockerfile
+    env_file: 
+      - .env
+    volumes:
+      - wordpress_data:/var/www/html
+    networks:
+      - backend
+    restart: always
+
+  mariadb:
+    container_name: mariadb_inception
+    build: ./requirements/mariadb
+    env_file: 
+      - .env
+    volumes:
+      - mariadb_data:/var/lib/mysql
+    networks:
+      - backend
     restart: always
 
 networks:
-  inception:
-    driver: bridge
+  backend:
 
 volumes:
-  mariadb:
+  mariadb_data:
+    driver: local
     driver_opts:
       type: none
       device: /home/mhaan/data/mysql
       o: bind
-
+  wordpress_data:
+    driver: local
+    driver_opts:
+      type: none
+      device: /home/mhaan/data/wordpress
+      o: bind
