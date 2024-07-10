@@ -1,13 +1,13 @@
 FROM	debian:stable-slim
  
-RUN	apt-get update -y \
-	&& apt-get upgrade -y \
-	&& apt-get install -y mariadb-server mariadb-client 
+RUN	apt-get update -y && apt-get upgrade -y
+
+RUN apt-get install -y mariadb-server
 
 EXPOSE	3306
 
-COPY	./tools/mariadb_setup.sh /tmp/setup.sh
-#RUN	chmod 777 /tmp/setup.sh
+COPY	./tools/mdb_setup.sh /tmp/mdb_setup.sh
 
-#RUN	/tmp/setup.sh
-ENTRYPOINT ["sh", "/tmp/setup.sh"]
+RUN	chmod +x /tmp/mdb_setup.sh
+
+ENTRYPOINT ["sh", "/tmp/mdb_setup.sh"]

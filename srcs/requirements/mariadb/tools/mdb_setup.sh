@@ -1,21 +1,23 @@
 #!/bin/sh
 
+service mariadb start
+sleep 5
+
+mariadb -e "CREATE DATABASE IF NOT EXISTS \ `${MYSQL_DB}\`;"
+mariadb -e "CREATE USER IF NOT EXISTS \`${MYSQL_USER}\`@'%' IDENTIFIED BY '${MYSQL_PASSWORD}';"
+
+
 if [ ! -d "/run/mysqld" ]; then
-
 	mkdir -p /run/mysqld
-
 	chown -R mysql:mysql /run/mysqld
-
 fi
 
 if [ ! -d "/var/lib/mysql/mysql" ]; then
 
        chown -R mysql:mysql /var/lib/mysql	
-
        mysql_install_db --basedir=/usr --datadir=/var/lib/mysql --user=mysql --rpm > /dev/null
 
        tfile='mktemp'
-
        if [ ! -f "$tfile" ]; then
 	       return 1
        fi
@@ -39,7 +41,6 @@ FLUSH PRIVILEGES;
 EOF
 
 	/usr/bin/mysqld --user=mysql --bootstrap < $tfile
-
 fi
 
 sed -i "s|.*bind-address\s*=.*|bind-address=0.0.0.0|g" /etc/mysql/mariadb.conf.d/50-server.cnf

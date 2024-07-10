@@ -15,6 +15,7 @@ RUN		apt-get update && apt-get upgrade -y \
 
 COPY		./conf/www.conf /var/www/html/www.conf
 COPY		./tools/wordpress_setup.sh /tmp/wordpress_setup.sh
+RUN			chmod +x /tmp/wordpress_setup.sh
 
 RUN		mkdir -p /run/php
 
@@ -27,3 +28,4 @@ EXPOSE		9000
 WORKDIR		/var/www/html/wordpress
 
 ENTRYPOINT	["sh", "/tmp/wordpress_setup.sh"]
+#RUN	["/tmp/wordpress_setup.sh"]
