@@ -4,7 +4,7 @@ RUN	apt-get update -y && apt-get upgrade -y
 
 RUN apt-get install -y mariadb-server
 
-EXPOSE	3306
+RUN	mkdir -p /run/mysqld
 
 COPY	./tools/mdb_setup.sh /tmp/mdb_setup.sh
 
