@@ -1,35 +1,22 @@
 services:
   nginx:
+    image: nginx:mhaan
     container_name: nginx_inception
     build: ./requirements/nginx
-    env_file:
+    env_file: 
       - .env
-    volumes:
-      - wordpress_data:/var/www/html
-    networks:
-      - backend
     ports:
       - "443:443"
+    volumes:
+      - wordpress_data:/var/www/wordpress
+    networks:
+      - inception
     depends_on:
       - wordpress
     restart: always
 
-  wordpress:
-    container_name: wordpress_inception
-    depends_on:
-      - mariadb
-    build: 
-      context: ./requirements/wordpress
-      dockerfile: Dockerfile
-    env_file: 
-      - .env
-    volumes:
-      - wordpress_data:/var/www/html
-    networks:
-      - backend
-    restart: always
-
   mariadb:
+    image: mariadb:mhaan
     container_name: mariadb_inception
     build: ./requirements/mariadb
     env_file: 
@@ -37,22 +24,40 @@ services:
     volumes:
       - mariadb_data:/var/lib/mysql
     networks:
-      - backend
+      - inception
+    restart: always
+
+  wordpress:
+    image: wordpress:mhaan
+    container_name: wordpress_inception
+    depends_on:
+      - mariadb
+    build: 
+      context: ./requirements/wordpress
+    env_file: 
+      - .env
+    volumes:
+      - wordpress_data:/var/www/wordpress
+    networks:
+      - inception
     restart: always
 
 networks:
-  backend:
+  inception:
+    name: inception
 
 volumes:
   mariadb_data:
+    name: mariadb_data
     driver: local
     driver_opts:
+      device: /home/mhaan/data/mariadb
       type: none
-      device: /home/mhaan/data/mysql
       o: bind
   wordpress_data:
+    name: wordpress_data
     driver: local
     driver_opts:
-      type: none
       device: /home/mhaan/data/wordpress
+      type: none
       o: bind

@@ -1,13 +1,13 @@
-FROM	debian:stable-slim
- 
-RUN	apt-get update -y && apt-get upgrade -y
+FROM debian:bullseye-slim
+
+RUN apt-get update && apt-get upgrade -y
 
 RUN apt-get install -y mariadb-server
 
-RUN	mkdir -p /run/mysqld
+COPY conf/mdb_setup.sh /tmp/mdb_setup.sh
 
-COPY	./tools/mdb_setup.sh /tmp/mdb_setup.sh
+RUN chmod +x /tmp/mdb_setup.sh
 
-RUN	chmod +x /tmp/mdb_setup.sh
+EXPOSE 3306
 
-ENTRYPOINT ["sh", "/tmp/mdb_setup.sh"]
+ENTRYPOINT ["/tmp/mdb_setup.sh"]
