@@ -38,11 +38,11 @@ wp:
 	docker exec -it wordpress_inception bash
 
 clean:
-	@docker stop $(docker ps -qa) || true
-	@docker rm $(docker ps -qa) || true
-	@docker rmi -f $(docker images -qa) || true
-	@docker volume rm $(docker volume ls -q) || true
-	@docker network rm $(docker network ls -q) || true
+	@docker stop $$(docker ps -qa) || true
+	@docker rm $$(docker ps -qa) || true
+	@docker rmi -f $$(docker images -qa) || true
+	@docker volume rm $$(docker volume ls -q) || true
+	@docker network rm $$(docker network ls -q) || true
 	@sudo rm -rf $(WP_DATA) || true
 	@sudo rm -rf $(DB_DATA) || true
 

@@ -1,4 +1,4 @@
-FROM debian:bullseye-slim
+FROM debian:oldstable-slim
 
 RUN apt-get update && apt-get upgrade -y
 
