@@ -3,7 +3,7 @@ services:
     image: nginx:mhaan
     container_name: nginx_inception
     build: ./requirements/nginx
-    env_file: 
+    env_file:
       - .env
     ports:
       - "443:443"
@@ -19,7 +19,7 @@ services:
     image: mariadb:mhaan
     container_name: mariadb_inception
     build: ./requirements/mariadb
-    env_file: 
+    env_file:
       - .env
     volumes:
       - mariadb_data:/var/lib/mysql
@@ -34,7 +34,7 @@ services:
       - mariadb
     build: 
       context: ./requirements/wordpress
-    env_file: 
+    env_file:
       - .env
     volumes:
       - wordpress_data:/var/www/wordpress

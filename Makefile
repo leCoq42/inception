@@ -11,7 +11,7 @@ all: up
 
 test: down build up
 
-up:	build
+up: build
 	@mkdir -p $(WP_DATA)
 	@mkdir -p $(DB_DATA)
 	${DOCKER_COMPOSE} up -d
